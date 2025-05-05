@@ -1,0 +1,11 @@
+[y, fs] = audioread('speech.wav');
+min_value = -1;
+max_value = 1; 
+y_norm = y / max(abs(y)); %normalisation
+N = 4; % #bits
+L = 2^N; % #levels kvantisis
+delta = (max_value - min_value) / L; % vima kvantisis
+centers = linspace(min_value + delta/2, max_value - delta/2, L); 
+xq = round((y_norm - min_value) / delta); % leveling
+xq = max(min(xq, L - 1), 0); % exasfalisi oti ta levels einai anamesa [0, L-1]
+quantized_signal = centers(xq + 1); 
